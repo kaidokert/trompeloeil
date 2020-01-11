@@ -1,6 +1,11 @@
 language: cpp
 dist: xenial
 
+env:
+  global:
+    - PYENV_VERSION=3.7
+    - PATH=$PATH:~/Library/Python/3.7/bin HOMEBREW_NO_INSTALL_CLEANUP=1
+
 matrix:
   include:
     - os: linux
@@ -357,7 +362,6 @@ matrix:
       compiler: clang
       env:
         - COMPILER="clang++" SANITIZE=false CONAN_COMPILER=apple-clang CC_VERSION=11.0 CC_LIBCXX=libc++
-        - PATH="~/Library/Python/2.7/bin:$PATH"
 
     - os: osx
       osx_image: xcode10.3
@@ -369,7 +373,7 @@ matrix:
       osx_image: xcode9
       compiler: clang
       env:
-        - COMPILER="clang++" SANITIZE=false
+        - COMPILER="clang++" SANITIZE=false CONAN_COMPILER=apple-clang CC_VERSION=9.0 CC_LIBCXX=libc++
 
     - os: osx
       osx_image: xcode8
@@ -382,16 +386,16 @@ matrix:
       compiler: clang
       env:
         - COMPILER="clang++" SANITIZE=false CONAN_COMPILER=apple-clang CC_VERSION=7.3 CC_LIBCXX=libc++
-        - PATH="~/Library/Python/2.7/bin:$PATH"
 
 install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
       which cmake || brew install cmake
+      which pip3 || brew upgrade python@3 || brew upgrade python@3 || true
     fi
   - |
     if [[ ! -z "${CONAN_COMPILER}" ]]; then
-      pip -v install --user conan
+      pip3 -v install --user conan
     fi
 
 before_script:
