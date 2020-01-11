@@ -416,6 +416,7 @@ before_script:
     if [[ ! -z "${CONAN_COMPILER}" ]]; then
       conan --version
       export CC_LIBCXX=${CC_LIBCXX:-libstdc++11} # Default to GCC
+      conan profile update settings.compiler.libcxx=${CC_LIBCXX} default
       conan create \
         -e CXX=${COMPILER} \
         -s compiler=${CONAN_COMPILER} \
